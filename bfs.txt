@@ -1,0 +1,264 @@
+//pepcoding code
+
+
+#include <iostream>
+#include <queue>
+#include <string>
+#include <cmath>
+#include <stack>
+#include <set>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+class node
+{
+    public:
+    int v;
+    string psf;
+};
+
+void dfs(int n,int** edges,int* visited){
+    queue<node> myqueue;
+    node n1;
+    n1.v=0;
+    n1.psf="0";
+    myqueue.push(n1);
+
+    while (myqueue.size()!=0)
+    {
+        node top=myqueue.front();
+        if(visited[top.v]==0){
+            cout<<top.v<<" "<<top.psf<<endl;
+        }
+        visited[top.v]=1;
+        myqueue.pop();
+        for (int i = 0; i < n; i++)
+        {
+            if(edges[top.v][i]==1 && visited[i]==0){
+                node n2;
+                n2.v=i;
+                n2.psf=top.psf+to_string(i);
+                myqueue.push(n2);
+            }
+        }
+    }
+}
+
+int main()
+{
+    int n, e; // n->no.of vertex, e->no.of edges
+    cin >> n >> e;
+    int **edges = new int *[n];
+    for (int i = 0; i < n; i++)
+    {
+        int *row = new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            row[j] = 0;
+        }
+        edges[i] = row;
+    }
+
+    for (int i = 0; i < e; i++)
+    {
+        int f, s;
+        cin >> f >> s;
+        edges[f][s] = 1;
+        edges[s][f] = 1;
+    }
+
+    
+    int* visited=new int[n];
+    for (int i = 0; i < n; i++)
+    {
+        visited[i]=0;
+    }
+    
+    
+    dfs(n,edges,visited);
+    
+    return 0;
+}
+
+
+
+
+
+
+//==================>>USING TWO QUEUES AND PRINTING LINE BY LINE<<==================================
+
+
+#include <iostream>
+#include <queue>
+#include <string>
+#include <cmath>
+#include <stack>
+#include <set>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+
+int main(){
+    int n,e;//n->no.of vertex, e->no.of edges
+    cin>>n>>e;
+    int **edges=new int*[n];
+    for (int i = 0; i < n; i++)
+    {
+        int* row=new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            row[j]=0;
+        }
+        edges[i]=row;
+    }
+    
+    // for (int i = 0; i < n; i++)
+    // {
+    //     for (int j = 0; j < n; j++)
+    //     {
+    //         cout<<edges[i][j];
+    //     }
+    //     cout<<endl;
+    // }
+    
+    for (int i = 0; i < e; i++)
+    {
+        int f,s;
+        cin>>f>>s;
+        edges[f][s]=1;
+        edges[s][f]=1;
+    }
+
+    bool visited[n]={0};
+
+    queue<int> first;
+    queue<int> second;
+
+    first.push(0);
+
+    while (first.size()!=0)
+    {   
+        while(first.size()!=0){
+            second.push(first.front());
+            first.pop();
+        }
+
+        while (second.size()!=0)
+        {   
+            if(visited[second.front()]!=1){
+                visited[second.front()]=1;
+                cout<<second.front()<<" ";
+            }
+            for (int i = 0; i < n; i++)
+            {   
+                if(edges[second.front()][i]==1 && visited[i]==0){
+                    first.push(i);
+                }
+            }
+            second.pop();
+        }
+        cout<<endl;
+    }
+    
+    
+    return 0;
+}
+        
+    
+
+    
+
+
+//============>>>>USING SINGLE QUEUE<<<=======================
+
+
+#include <iostream>
+#include <queue>
+#include <string>
+#include <cmath>
+#include <stack>
+#include <set>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+
+int main(){
+    int n,e;//n->no.of vertex, e->no.of edges
+    cin>>n>>e;
+    int **edges=new int*[n];
+    for (int i = 0; i < n; i++)
+    {
+        int* row=new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            row[j]=0;
+        }
+        edges[i]=row;
+    }
+    
+    // for (int i = 0; i < n; i++)
+    // {
+    //     for (int j = 0; j < n; j++)
+    //     {
+    //         cout<<edges[i][j];
+    //     }
+    //     cout<<endl;
+    // }
+    
+    for (int i = 0; i < e; i++)
+    {
+        int f,s;
+        cin>>f>>s;
+        edges[f][s]=1;
+        edges[s][f]=1;
+    }
+
+    bool visited[n]={0};
+
+    queue<int> myqueue;
+
+    myqueue.push(0);
+
+    while (myqueue.size()!=0)
+    {   
+        int vertex=myqueue.front();
+        for (int i = 0; i < n; i++)
+        {
+            if(visited[i]==0 && edges[vertex][i]==1){
+                myqueue.push(i);
+            }
+        }
+        
+        if(visited[vertex]==0){
+            cout<<vertex<<" ";
+            visited[vertex]=1;
+        }
+        myqueue.pop();    
+    }
+    
+    return 0;
+}
+        
+    
+
+    
+
+

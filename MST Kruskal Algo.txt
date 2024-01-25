@@ -1,0 +1,207 @@
+=========================>>>>OPTIMISED CODE<<<<<=====================================
+
+#include <iostream>
+#include <queue>
+#include <string>
+#include <cmath>
+#include <stack>
+#include <set>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+
+class edge{
+    public:
+    int f;
+    int s;
+    int w;
+};
+
+bool myfunc(edge e1,edge e2){
+    return e1.w<e2.w;
+}
+
+int findParent(int e,int* parent){
+    if(parent[e]==e){
+        return parent[e];
+    }
+    else{
+        return findParent(parent[e],parent);
+    }
+}
+
+int main(){
+    int n,e;//n->no.of vertex, e->no.of edges
+    cin>>n>>e;
+    edge* edges=new edge[e];
+    edge* ans=new edge[n-1];
+    int parent[n];
+    for (int i = 0; i < n; i++)
+    {
+        parent[i]=i;
+    }
+    
+    
+    for (int i = 0; i < e; i++)
+    {
+        int f,s,w;
+        cin>>f>>s>>w;
+        edge e;
+        e.f=f;
+        e.s=s;
+        e.w=w;
+        edges[i]=e;
+    }
+
+    int visited[n];
+    for (int i = 0; i < n; i++)
+    {
+        visited[i]=0;
+    }
+    sort(edges,edges+e,myfunc);
+    cout<<endl;
+    /*for(int i=0;i<e;i++){
+        cout<<edges[i].f<<" "<<edges[i].s<<" "<<edges[i].w<<endl;
+    }*/
+    //this loop is for printed sorted edges array
+    int j=0;
+    int k=0;
+    int count=0;
+    while(count<n-1)
+    {   
+        if(findParent(edges[j].f,parent)!=findParent(edges[j].s,parent)){
+            ans[k]=edges[j];
+            parent[edges[j].s]=edges[j].f;
+            k++,j++,count++;
+        }
+        else{
+            j++;
+        }
+    }
+    
+    for (int i = 0; i < n-1; i++)
+    {
+        cout<<ans[i].f<<" "<<ans[i].s<<" "<<ans[i].w<<endl;
+    }
+    
+    return 0;
+}
+        
+    
+
+    
+
+
+===============================>>>>>>MY CODE<<<<<<===================================
+
+
+
+
+
+#include <iostream>
+#include <queue>
+#include <string>
+#include <cmath>
+#include <stack>
+#include <set>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+
+class edge{
+    public:
+    int f;
+    int s;
+    int w;
+};
+
+bool myfunc(edge e1,edge e2){
+    return e1.w<e2.w;
+}
+
+bool cycleDetection(int* parent,edge curr_edge){
+    int f=curr_edge.f;
+    int s=curr_edge.s;
+    if(parent[f]==parent[s]){
+        return 0;
+    }
+    else{
+        parent[s]=parent[f];
+        return 1;
+    }
+}
+
+int main(){
+    int n,e;//n->no.of vertex, e->no.of edges
+    cin>>n>>e;
+    edge edges[e];
+    edge ans[n-1];
+    int parent[n];
+    for (int i = 0; i < n; i++)
+    {
+        parent[i]=i;
+    }
+    
+    
+    for (int i = 0; i < e; i++)
+    {
+        int f,s,w;
+        cin>>f>>s>>w;
+        edge e;
+        e.f=f;
+        e.s=s;
+        e.w=w;
+        edges[i]=e;
+    }
+
+    int visited[n];
+    for (int i = 0; i < n; i++)
+    {
+        visited[i]=0;
+    }
+    sort(edges,edges+n,myfunc);
+
+    int j=0;
+    int k=0;
+    int count=0;
+    for (int i = 0; i < n-1; i++)
+    {
+        if(cycleDetection(parent,edges[j])){
+            ans[k]=edges[j];
+            k++;
+            j++;
+            count++;
+        }
+        else{
+            j++;
+        }
+        if(count==n-1){
+            break;
+        }
+    }
+    
+    for (int i = 0; i < n-1; i++)
+    {
+        cout<<ans[i].f<<" "<<ans[i].s<<" "<<endl;
+    }
+    
+    return 0;
+}
+        
+    
+
+    
+
+

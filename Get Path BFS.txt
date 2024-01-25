@@ -1,0 +1,110 @@
+//===================================>>>MY CODE<<<===============================================
+
+
+
+
+#include <iostream>
+#include <queue>
+#include <string>
+#include <cmath>
+#include <stack>
+#include <set>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+
+void getPath(int sv,int ev,int n,int** edges,int* visited){
+    queue<int> myqueue;
+    unordered_map<int,int> parent;//ye map bateyega parent of a given vertex
+    myqueue.push(sv);
+    vector<int> path;//isme pura bfs save krenge
+    bool pathFound=0;
+    while (myqueue.size()!=0)
+    {   
+        if(path.size()>0){
+            if(path[path.size()-1]==ev){
+            pathFound=1;
+            break;
+            }
+        }
+        cout<<"queue front is "<<myqueue.front()<<endl;
+        path.push_back(myqueue.front());
+        visited[myqueue.front()]=1;
+        for (int i = 0; i < n; i++)
+        {
+            if(edges[myqueue.front()][i]==1 && visited[i]==0){
+                if(parent.count(i)==0){
+                    parent[i]=myqueue.front();
+                    cout<<"adding "<<i<<" into the queue"<<endl;
+                }
+                myqueue.push(i);
+            }
+        }
+        myqueue.pop();
+    }
+    
+    if(pathFound==1){
+        vector<int> ans;
+        int vertex=path.back();
+        while (1)
+        {   
+            if(vertex==sv){
+                ans.push_back(vertex);
+                break;
+            }
+            ans.push_back(vertex);
+            vertex=parent[vertex];
+        }
+        cout<<"ans is "<<endl<<endl;
+        for (int i = ans.size()-1; i >=0; i--)
+        {
+            cout<<ans[i]<<" ";
+        }
+        
+    }
+}
+
+int main(){
+    int n,e;//n->no.of vertex, e->no.of edges
+    cin>>n>>e;
+    int **edges=new int*[n];
+    for (int i = 0; i < n; i++)
+    {
+        int* row=new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            row[j]=0;
+        }
+        edges[i]=row;
+    }
+    
+    for (int i = 0; i < e; i++)
+    {
+        int f,s;
+        cin>>f>>s;
+        edges[f][s]=1;
+        edges[s][f]=1;
+    }
+
+    int visited[n];
+    for (int i = 0; i < n; i++)
+    {
+        visited[i]=0;
+    }
+    vector<int> path;
+    getPath(0,4,n,edges,visited);
+    
+    return 0;
+}
+        
+    
+
+    
+
+

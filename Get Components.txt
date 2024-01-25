@@ -1,0 +1,94 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <cmath>
+#include <stack>
+#include <set>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+
+void dfs(int sv,int n,int** edges,bool* visited,vector<int> &path){
+    
+    path.push_back(sv);
+    visited[sv]=1;
+    for (int i = 0; i < n; i++)
+    {
+        if(edges[sv][i]==1 && visited[i]==0){
+            dfs(i,n,edges,visited,path);
+        }
+    }
+}
+
+vector<vector<int>> getComponents(int n,int** edges){
+    vector<vector<int>> ans;
+
+    bool visited[n]={0};
+
+    vector<int> path;
+    dfs(0,n,edges,visited,path);
+    ans.push_back(path);
+
+    for (int i = 0; i < n; i++)
+    {
+        if(visited[i]==0){
+            vector<int> newPath;
+            dfs(i,n,edges,visited,newPath);
+            ans.push_back(newPath);
+        }
+    }
+    
+    return ans;
+}
+
+int main(){
+    int n,e;//n->no.of vertex, e->no.of edges
+    cin>>n>>e;
+    int **edges=new int*[n];
+    for (int i = 0; i < n; i++)
+    {
+        int* row=new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            row[j]=0;
+        }
+        edges[i]=row;
+    }
+    
+    for (int i = 0; i < e; i++)
+    {
+        int f,s;
+        cin>>f>>s;
+        edges[f][s]=1;
+        edges[s][f]=1;
+    }
+
+    int visited[n];
+    for (int i = 0; i < n; i++)
+    {
+        visited[i]=0;
+    }
+    
+    vector<vector<int>> ans=getComponents(n,edges);
+
+    for(auto x:ans){
+        for (int i = 0; i < x.size(); i++)
+        {
+            cout<<x[i]<<" ";
+        }
+        cout<<endl;
+    }
+    return 0;
+}
+        
+    
+
+ 
+
+

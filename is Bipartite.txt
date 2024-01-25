@@ -1,0 +1,89 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <cmath>
+#include <stack>
+#include <set>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+class node
+{
+    public:
+    int v;
+    int l;//lvl of vertex initially zero
+};
+
+bool isBipartite(int n,int** edges,int* level){
+    queue<node> myqueue;
+    node n1;
+    n1.v=0;
+    n1.l=0;
+    myqueue.push(n1);
+    while (myqueue.size()!=0)
+    {   
+        node top=myqueue.front();
+        myqueue.pop();
+        if(level[top.v]!=-1){
+            if(level[top.v]!=top.l){
+                return false;
+            }
+        }
+        else{
+            level[top.v]=top.l;
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            if(edges[top.v][i]==1 && level[i]==-1){
+                node n2;
+                n2.v=i;
+                n2.l=top.l+1;
+                myqueue.push(n2);
+            }
+        }
+    }
+    return true;
+}
+
+int main()
+{
+    int n, e; // n->no.of vertex, e->no.of edges
+    cin >> n >> e;
+    int **edges = new int *[n];
+    for (int i = 0; i < n; i++)
+    {
+        int *row = new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            row[j] = 0;
+        }
+        edges[i] = row;
+    }
+
+    for (int i = 0; i < e; i++)
+    {
+        int f, s;
+        cin >> f >> s;
+        edges[f][s] = 1;
+        edges[s][f] = 1;
+    }
+
+    
+    int* visited=new int[n];
+    for (int i = 0; i < n; i++)
+    {
+        visited[i]=-1;
+    }
+    
+    
+    cout<<isBipartite(n,edges,visited);
+    
+    return 0;
+}

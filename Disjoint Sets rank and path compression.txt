@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+class DisjointSets{
+    public:
+    int n;
+    int* parent=new int[n];
+    int* rank=new int[n];
+    
+    DisjointSets(int n){
+        this->n=n;
+        for (int i = 0; i < n; i++)
+        {
+            parent[i]=i;
+            rank[i]=0;
+        }
+    }
+
+    int findParent(int e){
+        if(parent[e]==e){
+            return e;
+        }
+        else{
+            return parent[e]=findParent(parent[e]);
+        }
+    }
+
+    void printParent(){
+        for (int i = 0; i < n; i++)
+        {
+            cout<<parent[i]<<" ";
+        }
+    }
+    void unionComponents(int f,int s){
+        int fp=findParent(f);
+        int sp=findParent(s);
+        if(rank[fp]==rank[sp]){
+            parent[sp]=fp;
+            rank[fp]++;
+        }
+        else if(rank[fp]<rank[sp]){
+            parent[fp]=sp;
+        }
+        else if(rank[fp]>rank[sp]){
+            parent[sp]=fp;
+        }
+        cout<<"after adding "<<f<<" and "<<s<<endl;
+        printParent();
+        cout<<endl;
+        
+    }
+    
+};
+
+int main() {
+        DisjointSets D(7);
+        D.unionComponents(2,6);
+        D.unionComponents(1,2);
+        D.unionComponents(5,6);
+        D.unionComponents(3,4);
+        D.unionComponents(1,3);
+        D.unionComponents(0,1);
+	return 0;
+}

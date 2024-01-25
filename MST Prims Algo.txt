@@ -1,0 +1,209 @@
+================================================>>>>>MY CODE<<<<<<====================================================================
+
+
+
+
+
+#include <iostream>
+#include <queue>
+#include <string>
+#include <cmath>
+#include <stack>
+#include <set>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+
+void primsMST(int n, int **edges, int *parent, int *weight)
+{
+    int* visited=new int[n];
+
+    for (int i = 0; i < n; i++)
+    {
+        visited[i]=0;
+    }
+
+    int source =0;
+    int count=0;
+    while (count!=n)
+    {   
+        visited[source]=1;
+        for (int i = 0; i < n; i++)
+        {
+            if (edges[source][i] > 0 && visited[i]==0 && i!=source)
+            {
+                if (weight[i] > edges[source][i])
+                {   
+                    weight[i] = edges[source][i];
+                    parent[i] = source;
+                }
+            }
+        }
+        int minWeightVertex=INT_MAX;
+        int minVertex=source;
+        for (int i = 0; i < n; i++)
+        {
+            if(weight[i]<minWeightVertex && i!=source && visited[i]==0){
+                minWeightVertex=weight[i];
+                minVertex=i;
+            }
+        }
+        source=minVertex;
+        count++;
+
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << "edge include is " << parent[i] << " " << i << " " << edges[parent[i]][i] << endl;
+    }
+}
+
+int main()
+{
+    int n, e; // n->no.of vertex, e->no.of edges
+    cin >> n >> e;
+    int **edges = new int *[n];
+    for (int i = 0; i < n; i++)
+    {
+        int *row = new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            row[j] = 0;
+        }
+        edges[i] = row;
+    }
+
+    for (int i = 0; i < e; i++)
+    {
+        int f, s, w;
+        cin >> f >> s >> w;
+        edges[f][s] = w;
+        edges[s][f] = w;
+    }
+
+    int parent[n];
+    int *weight = new int[n];
+    for (int i = 0; i < n; i++)
+    {
+        parent[i] = 0;
+        weight[i] = INT_MAX;
+    }
+
+    primsMST(n, edges, parent, weight);
+    return 0;
+}
+
+
+
+
+====================>>>USING PRIORITY QUEUE PEPCODING CODE<<==========================================
+
+
+
+
+#include <iostream>
+#include <queue>
+#include <string>
+#include <cmath>
+#include <stack>
+#include <set>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+class node
+{
+    public:
+    int v;
+    int p;//parent of the given vertex
+    int w;//wt of given edge
+};
+
+bool operator<(node n1,node n2){
+    return n1.w>n2.w;
+}
+
+void prims(int sv,int n,int** edges,int* visited){
+    node n1;
+    n1.v=sv;
+    n1.p=-1;
+    n1.w=0;
+
+    priority_queue<node> pq;
+    pq.push(n1);
+    int count=0;
+
+    while (pq.size()!=0)
+    {   
+        node topNode=pq.top();
+        pq.pop();
+        if(visited[topNode.v]==1){
+            continue;
+        }
+        visited[topNode.v]=1;
+        if(count!=0){
+            cout<<topNode.v<<" via parrent "<<topNode.p<<" with edge weight"<<topNode.w<<endl;
+        }
+        if(count==0){
+            count++;
+        }
+        for (int i = 0; i < n; i++)
+        {
+            if(edges[topNode.v][i]>0 && visited[i]==0){
+                node newNode;
+                newNode.v=i;
+                newNode.p=topNode.v;
+                newNode.w=edges[topNode.v][i];
+                pq.push(newNode);
+            }
+        }
+    }
+}
+
+int main()
+{
+    int n, e; // n->no.of vertex, e->no.of edges
+    cin >> n >> e;
+    int **edges = new int *[n];
+    for (int i = 0; i < n; i++)
+    {
+        int *row = new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            row[j] = 0;
+        }
+        edges[i] = row;
+    }
+
+    for (int i = 0; i < e; i++)
+    {
+        int f, s,w;
+        cin >> f >> s>>w;
+        edges[f][s] = w;
+        edges[s][f] = w;
+    }
+
+    
+    int* visited=new int[n];
+    for (int i = 0; i < n; i++)
+    {
+        visited[i]=0;
+    }
+    
+    
+    prims(0,n,edges,visited);
+    
+    return 0;
+}
